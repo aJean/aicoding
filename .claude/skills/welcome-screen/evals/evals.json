@@ -1,0 +1,50 @@
+{
+  "skill_name": "welcome-screen",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "帮我做个欢迎界面，我叫 Luna，是个独立音乐人，风格是电子流行",
+      "expected_output": "A single self-contained HTML file with a glowing neon gradient welcome screen featuring Luna's name, music theme decorations, and Y2K/trendy aesthetic",
+      "files": [],
+      "assertions": [
+        {"id": "has-file", "description": "Output HTML file exists and is non-empty"},
+        {"id": "has-name", "description": "Page contains the name 'Luna'"},
+        {"id": "has-gradient", "description": "CSS includes linear-gradient or radial-gradient for background"},
+        {"id": "has-animation", "description": "CSS includes @keyframes animation"},
+        {"id": "has-glow", "description": "CSS includes text-shadow for neon glow effect"},
+        {"id": "has-music-theme", "description": "Page references music, sound, or performance (e.g. 音乐, music, sound, 电子, pop)"},
+        {"id": "self-contained", "description": "File has no broken external dependencies (no local file src= references)"}
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "生成一个活动宣传页，主题是「2025 毕业季派对」，要有青春感和节日氛围",
+      "expected_output": "A single self-contained HTML file with festive, youthful party vibes, graduation theme, vibrant colors and animated elements",
+      "files": [],
+      "assertions": [
+        {"id": "has-file", "description": "Output HTML file exists and is non-empty"},
+        {"id": "has-year-or-theme", "description": "Page contains '2025' or graduation-related text (毕业, graduate, graduation)"},
+        {"id": "has-gradient", "description": "CSS includes linear-gradient or radial-gradient for background"},
+        {"id": "has-animation", "description": "CSS includes @keyframes animation"},
+        {"id": "has-glow", "description": "CSS includes text-shadow or box-shadow for festive glow"},
+        {"id": "has-decorations", "description": "Page includes decorative elements (stars ✦✧★, confetti, or emoji for festive vibe)"},
+        {"id": "self-contained", "description": "File has no broken external dependencies"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "做一个个人作品集首页，设计师风格，要酷炫时髦，有霓虹灯效果",
+      "expected_output": "A single self-contained HTML file for a designer portfolio intro with neon effects, modern typography, and stylish layout",
+      "files": [],
+      "assertions": [
+        {"id": "has-file", "description": "Output HTML file exists and is non-empty"},
+        {"id": "has-neon", "description": "CSS includes both text-shadow AND box-shadow for neon lamp effect"},
+        {"id": "has-gradient", "description": "CSS includes linear-gradient or radial-gradient"},
+        {"id": "has-animation", "description": "CSS includes @keyframes animation"},
+        {"id": "has-cta", "description": "Page includes a button or call-to-action element"},
+        {"id": "has-portfolio-language", "description": "Page references portfolio, design, work, or project (作品, 设计, portfolio, work)"},
+        {"id": "self-contained", "description": "File has no broken external dependencies"}
+      ]
+    }
+  ]
+}
