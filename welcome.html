@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEON PULSE 2026 — 霓虹脉冲音乐节</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a14;
+    --paper: #fff7ec;
+    --coral: #ff4d6d;
+    --tangerine: #ff8c2a;
+    --acid: #f9f871;
+    --magenta: #ff2bb0;
+    --cyan: #00e0ff;
+    --violet: #5a2bff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background: var(--ink);
+    color: var(--paper);
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    padding: clamp(1.5rem, 3vw, 3rem);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 2rem;
+    overflow: hidden;
+    background:
+      radial-gradient(1200px 800px at 85% 10%, rgba(255,77,109,0.55), transparent 60%),
+      radial-gradient(900px 700px at 10% 90%, rgba(90,43,255,0.55), transparent 60%),
+      radial-gradient(700px 500px at 50% 40%, rgba(255,140,42,0.4), transparent 65%),
+      var(--ink);
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-1 { width: 480px; height: 480px; background: var(--magenta); top: -120px; right: -120px; opacity: 0.55; }
+  .blob-2 { width: 380px; height: 380px; background: var(--cyan); bottom: -80px; left: -80px; opacity: 0.45; }
+  .blob-3 { width: 260px; height: 260px; background: var(--acid); top: 38%; left: 42%; opacity: 0.35; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .blob-1 { animation: drift 14s ease-in-out infinite alternate; }
+    .blob-2 { animation: drift 11s ease-in-out infinite alternate-reverse; }
+    .blob-3 { animation: drift 18s ease-in-out infinite alternate; }
+  }
+
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(60px, -40px) scale(1.15); }
+  }
+
+  .topbar {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 700;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--coral), var(--tangerine), var(--acid), var(--magenta), var(--coral));
+    box-shadow: 0 0 0 2px var(--ink), 0 0 0 4px var(--paper);
+  }
+
+  .topbar nav {
+    display: flex;
+    gap: clamp(0.8rem, 2vw, 2rem);
+    flex-wrap: wrap;
+  }
+  .topbar nav a {
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  .topbar nav a:hover { opacity: 1; color: var(--acid); }
+
+  .hero-main {
+    position: relative;
+    z-index: 5;
+    align-self: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: clamp(1rem, 4vw, 3rem) 0;
+  }
+
+  .hero-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .hero-meta-row .pill {
+    border: 1.5px solid var(--paper);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 16vw, 14rem);
+    line-height: 0.85;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .hero h1 .line2 {
+    display: block;
+    background: linear-gradient(90deg, var(--coral), var(--tangerine) 35%, var(--acid) 70%, var(--magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero h1 .stroke {
+    -webkit-text-stroke: 2px var(--paper);
+    color: transparent;
+  }
+
+  .tagline {
+    max-width: 38rem;
+    font-size: clamp(1rem, 1.4vw + 0.7rem, 1.4rem);
+    font-weight: 300;
+    opacity: 0.9;
+  }
+
+  .tagline strong { font-weight: 700; color: var(--acid); }
+
+  .hero-bottom {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: end;
+  }
+
+  .hero-info {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .hero-info .when {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.4rem, 2vw + 0.5rem, 2.4rem);
+    letter-spacing: 0.02em;
+  }
+  .hero-info .where {
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.1rem 1.8rem;
+    background: var(--acid);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 1.05rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 6px 6px 0 var(--coral);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cta:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 var(--coral);
+  }
+  .cta .arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .cta:hover .arrow { transform: translateX(4px); }
+
+  .stamp {
+    position: absolute;
+    top: 18%;
+    right: clamp(1rem, 4vw, 4rem);
+    width: clamp(110px, 14vw, 180px);
+    height: clamp(110px, 14vw, 180px);
+    border-radius: 50%;
+    background: var(--ink);
+    border: 2.5px solid var(--paper);
+    color: var(--paper);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    transform: rotate(-12deg);
+    z-index: 6;
+    box-shadow: 0 0 0 6px var(--ink), 0 0 0 7.5px var(--coral);
+  }
+  .stamp .small { font-size: 0.7rem; letter-spacing: 0.2em; opacity: 0.8; }
+  .stamp .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    line-height: 1;
+    color: var(--acid);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .stamp { animation: spinwobble 8s ease-in-out infinite; }
+  }
+  @keyframes spinwobble {
+    0%, 100% { transform: rotate(-12deg); }
+    50%      { transform: rotate(-6deg); }
+  }
+
+  /* ============ MARQUEE ============ */
+  .marquee {
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 1rem 0;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    white-space: nowrap;
+    width: max-content;
+    animation: scroll 28s linear infinite;
+  }
+  .marquee span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    letter-spacing: 0.04em;
+  }
+  .marquee .dot {
+    color: var(--coral);
+  }
+  @keyframes scroll {
+    to { transform: translateX(-50%); }
+  }
+
+  /* ============ COUNTDOWN ============ */
+  .countdown {
+    padding: clamp(3rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem);
+    background: var(--ink);
+    text-align: center;
+    position: relative;
+  }
+  .countdown::before {
+    content: '🎶';
+    position: absolute;
+    font-size: clamp(8rem, 18vw, 18rem);
+    top: -40px;
+    right: -20px;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+  .countdown .label {
+    color: var(--acid);
+    margin-bottom: 1rem;
+  }
+  .countdown h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    margin-bottom: 3rem;
+  }
+
+  .clock {
+    display: flex;
+    justify-content: center;
+    gap: clamp(0.8rem, 2vw, 2rem);
+    flex-wrap: wrap;
+  }
+  .digit-card {
+    background: linear-gradient(180deg, #1a1525, #0d0a14);
+    border: 2px solid var(--paper);
+    border-radius: 12px;
+    padding: 1.4rem clamp(1rem, 2vw, 2rem);
+    min-width: clamp(90px, 14vw, 150px);
+    position: relative;
+    box-shadow: 6px 6px 0 var(--magenta);
+  }
+  .digit-card:nth-child(1) { box-shadow: 6px 6px 0 var(--coral); }
+  .digit-card:nth-child(2) { box-shadow: 6px 6px 0 var(--tangerine); }
+  .digit-card:nth-child(3) { box-shadow: 6px 6px 0 var(--acid); }
+  .digit-card:nth-child(4) { box-shadow: 6px 6px 0 var(--cyan); }
+
+  .digit-card .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1;
+    color: var(--paper);
+    font-variant-numeric: tabular-nums;
+  }
+  .digit-card .unit {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--paper);
+    opacity: 0.7;
+    margin-top: 0.4rem;
+  }
+
+  /* ============ LINEUP (BENTO) ============ */
+  .lineup {
+    background: var(--paper);
+    color: var(--ink);
+    padding: clamp(3rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem);
+  }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .section-head h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    line-height: 0.9;
+  }
+  .section-head .label { opacity: 0.6; }
+
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 110px;
+    gap: 1rem;
+  }
+
+  .act {
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.25s;
+  }
+  .act:hover { transform: translateY(-4px); }
+  .act .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.4rem, 2.3vw, 2.2rem);
+    line-height: 1;
+  }
+  .act .role {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .act .stage {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+  }
+
+  .act-1 { grid-column: span 4; grid-row: span 2; background: var(--coral); color: var(--paper); }
+  .act-2 { grid-column: span 2; grid-row: span 2; background: var(--ink); color: var(--acid); }
+  .act-3 { grid-column: span 2; grid-row: span 1; background: var(--acid); }
+  .act-4 { grid-column: span 2; grid-row: span 1; background: var(--cyan); }
+  .act-5 { grid-column: span 2; grid-row: span 1; background: var(--tangerine); color: var(--paper); }
+  .act-6 { grid-column: span 3; grid-row: span 1; background: var(--paper); border: 2px dashed var(--ink); }
+  .act-7 { grid-column: span 3; grid-row: span 1; background: var(--magenta); color: var(--paper); }
+
+  .act-1 .name { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+
+  /* ============ AGENDA ============ */
+  .agenda {
+    background: var(--ink);
+    padding: clamp(3rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem);
+  }
+  .agenda h2 { color: var(--paper); }
+
+  .timeline {
+    display: grid;
+    gap: 0;
+    margin-top: 2rem;
+    border-top: 1.5px solid rgba(255,247,236,0.2);
+  }
+  .slot {
+    display: grid;
+    grid-template-columns: clamp(80px, 12vw, 160px) auto 1fr;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding: 1.6rem 0;
+    border-bottom: 1.5px solid rgba(255,247,236,0.2);
+    transition: padding 0.2s;
+  }
+  .slot:hover { padding-left: 1rem; }
+  .slot .time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    color: var(--acid);
+  }
+  .slot .stage-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: var(--coral);
+    color: var(--paper);
+    white-space: nowrap;
+  }
+  .slot .stage-tag.b { background: var(--cyan); color: var(--ink); }
+  .slot .stage-tag.c { background: var(--magenta); color: var(--paper); }
+
+  .slot .title {
+    font-size: clamp(1rem, 1vw + 0.7rem, 1.3rem);
+    font-weight: 600;
+  }
+
+  /* ============ SPONSORS ============ */
+  .sponsors {
+    background: var(--paper);
+    color: var(--ink);
+    padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 4rem);
+  }
+  .sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .sponsor-tile {
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    background: var(--paper);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .sponsor-tile:hover { transform: rotate(-2deg); background: var(--acid); }
+
+  .sponsor-tile.gold { background: var(--acid); }
+  .sponsor-tile.gold:hover { background: var(--tangerine); color: var(--paper); }
+
+  /* ============ CTA SECTION ============ */
+  .final-cta {
+    background:
+      radial-gradient(800px 500px at 20% 50%, rgba(255,43,176,0.6), transparent 60%),
+      radial-gradient(600px 400px at 80% 50%, rgba(0,224,255,0.5), transparent 60%),
+      var(--ink);
+    padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta .huge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 11vw, 9rem);
+    line-height: 0.85;
+    margin-bottom: 2rem;
+  }
+  .final-cta .huge .stroke {
+    -webkit-text-stroke: 2px var(--paper);
+    color: transparent;
+  }
+  .final-cta .scribble {
+    font-family: 'Permanent Marker', cursive;
+    color: var(--acid);
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    transform: rotate(-3deg);
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+  .final-cta .cta {
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 6px 6px 0 var(--magenta);
+  }
+  .final-cta .cta:hover {
+    box-shadow: 10px 10px 0 var(--magenta);
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4vw, 4rem);
+    border-top: 1.5px solid rgba(255,247,236,0.15);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+  }
+  footer .links { display: flex; gap: 1.5rem; flex-wrap: wrap; opacity: 0.8; }
+  footer .links a:hover { color: var(--acid); }
+
+  /* ============ ENTRANCE ANIMATIONS ============ */
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-up { opacity: 0; transform: translateY(30px); animation: fadeUp 0.8s ease forwards; }
+    .fade-up.d1 { animation-delay: 0.1s; }
+    .fade-up.d2 { animation-delay: 0.25s; }
+    .fade-up.d3 { animation-delay: 0.4s; }
+    .fade-up.d4 { animation-delay: 0.55s; }
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ MOBILE ============ */
+  @media (max-width: 720px) {
+    .hero-bottom { grid-template-columns: 1fr; }
+    .stamp { top: 10%; right: 1rem; transform: rotate(-8deg); }
+    .bento {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: auto;
+    }
+    .act-1, .act-2, .act-3, .act-4, .act-5, .act-6, .act-7 {
+      grid-column: span 2;
+      grid-row: auto;
+      min-height: 110px;
+    }
+    .slot {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 1.2rem 0;
+    }
+    .slot .stage-tag { justify-self: start; }
+    footer { grid-template-columns: 1fr; }
+    .topbar nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="topbar fade-up">
+    <div class="logo">
+      <div class="logo-mark"></div>
+      <span>NEON PULSE</span>
+    </div>
+    <nav>
+      <a href="#countdown">倒计时</a>
+      <a href="#lineup">阵容</a>
+      <a href="#agenda">日程</a>
+      <a href="#sponsors">合作伙伴</a>
+      <a href="#register">购票</a>
+    </nav>
+  </div>
+
+  <div class="hero-main">
+    <div class="hero-meta-row fade-up d1">
+      <span class="pill">第三届 · 2026</span>
+      <span class="pill">3 个舞台 · 22 组艺人</span>
+    </div>
+
+    <h1 class="fade-up d2">
+      <span class="stroke">NEON</span><br/>
+      <span class="line2">PULSE</span>
+    </h1>
+
+    <p class="tagline fade-up d3">
+      一夜电流,三舞台 <strong>22 组艺人</strong> 接力。<br/>
+      把 7 月 18 日的黄昏交给低音炮 —— 我们在 <strong>西岸</strong> 等你。
+    </p>
+  </div>
+
+  <div class="hero-bottom fade-up d4">
+    <div class="hero-info">
+      <span class="label">When &amp; Where</span>
+      <div class="when">2026.07.18 — 07.19 · 18:00 起</div>
+      <div class="where">上海 · 西岸艺术中心 户外广场</div>
+    </div>
+    <a href="#register" class="cta">
+      立即购票 <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="stamp">
+    <div>
+      <div class="small">SAVE THE DATE</div>
+      <div class="big">07.18</div>
+      <div class="small">SHANGHAI</div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>NEON PULSE 2026</span><span class="dot">●</span>
+    <span>22 ARTISTS</span><span class="dot">●</span>
+    <span>3 STAGES</span><span class="dot">●</span>
+    <span>2 NIGHTS</span><span class="dot">●</span>
+    <span>SHANGHAI WEST BUND</span><span class="dot">●</span>
+    <span>NEON PULSE 2026</span><span class="dot">●</span>
+    <span>22 ARTISTS</span><span class="dot">●</span>
+    <span>3 STAGES</span><span class="dot">●</span>
+    <span>2 NIGHTS</span><span class="dot">●</span>
+    <span>SHANGHAI WEST BUND</span><span class="dot">●</span>
+  </div>
+</div>
+
+<section class="countdown" id="countdown">
+  <div class="label">距离开场还有</div>
+  <h2>把音浪调到最大</h2>
+  <div class="clock" role="timer" aria-live="polite">
+    <div class="digit-card"><div class="num" id="dd">00</div><div class="unit">Days</div></div>
+    <div class="digit-card"><div class="num" id="hh">00</div><div class="unit">Hours</div></div>
+    <div class="digit-card"><div class="num" id="mm">00</div><div class="unit">Minutes</div></div>
+    <div class="digit-card"><div class="num" id="ss">00</div><div class="unit">Seconds</div></div>
+  </div>
+</section>
+
+<section class="lineup" id="lineup">
+  <div class="section-head">
+    <h2>LINEUP / 演出阵容</h2>
+    <span class="label">22 ACTS · 3 STAGES</span>
+  </div>
+  <div class="bento">
+    <div class="act act-1">
+      <div class="stage">★ HEADLINER · MAIN STAGE</div>
+      <div>
+        <div class="name">Lyra Vox</div>
+        <div class="role">合成器流行 · 首次内地巡演</div>
+      </div>
+    </div>
+    <div class="act act-2">
+      <div class="stage">★ SUNSET</div>
+      <div>
+        <div class="name">回声八点档</div>
+        <div class="role">独立摇滚</div>
+      </div>
+    </div>
+    <div class="act act-3">
+      <div class="stage">MAIN STAGE</div>
+      <div>
+        <div class="name">PULSAR.404</div>
+        <div class="role">电子 / DJ Set</div>
+      </div>
+    </div>
+    <div class="act act-4">
+      <div class="stage">SUNSET</div>
+      <div>
+        <div class="name">月亮舌头</div>
+        <div class="role">梦幻流行</div>
+      </div>
+    </div>
+    <div class="act act-5">
+      <div class="stage">UNDERGROUND</div>
+      <div>
+        <div class="name">KOI Riot</div>
+        <div class="role">硬核朋克</div>
+      </div>
+    </div>
+    <div class="act act-6">
+      <div class="stage">+ 17 MORE</div>
+      <div>
+        <div class="name">完整阵容近期公布</div>
+        <div class="role">扫码订阅,第一时间知道</div>
+      </div>
+    </div>
+    <div class="act act-7">
+      <div class="stage">UNDERGROUND</div>
+      <div>
+        <div class="name">夜班司机</div>
+        <div class="role">嘻哈 · Live Band</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="agenda" id="agenda">
+  <div class="section-head">
+    <h2>SCHEDULE / 日程</h2>
+    <span class="label">DAY 1 · 07.18 FRI</span>
+  </div>
+  <div class="timeline">
+    <div class="slot">
+      <div class="time">17:30</div>
+      <span class="stage-tag">MAIN</span>
+      <div class="title">闸门开启 · 入场指引</div>
+    </div>
+    <div class="slot">
+      <div class="time">18:30</div>
+      <span class="stage-tag b">SUNSET</span>
+      <div class="title">月亮舌头 · 开场首演</div>
+    </div>
+    <div class="slot">
+      <div class="time">19:45</div>
+      <span class="stage-tag c">UNDER</span>
+      <div class="title">KOI Riot · 30 分钟暴走</div>
+    </div>
+    <div class="slot">
+      <div class="time">20:30</div>
+      <span class="stage-tag">MAIN</span>
+      <div class="title">PULSAR.404 · DJ Set</div>
+    </div>
+    <div class="slot">
+      <div class="time">21:30</div>
+      <span class="stage-tag b">SUNSET</span>
+      <div class="title">回声八点档 · Live</div>
+    </div>
+    <div class="slot">
+      <div class="time">22:30</div>
+      <span class="stage-tag">MAIN</span>
+      <div class="title">Lyra Vox · 闭幕大秀(90 分钟)</div>
+    </div>
+    <div class="slot">
+      <div class="time">00:30</div>
+      <span class="stage-tag c">UNDER</span>
+      <div class="title">After Party · 直到天亮</div>
+    </div>
+  </div>
+</section>
+
+<section class="sponsors" id="sponsors">
+  <div class="section-head">
+    <h2>PARTNERS / 合作伙伴</h2>
+    <span class="label">致谢</span>
+  </div>
+  <div class="sponsor-grid">
+    <div class="sponsor-tile gold">HEADLINE × OYSTER</div>
+    <div class="sponsor-tile gold">FIZZ DRINKS</div>
+    <div class="sponsor-tile">PIXEL RADIO</div>
+    <div class="sponsor-tile">SUBWAVE STUDIO</div>
+    <div class="sponsor-tile">RIOT PRESS</div>
+    <div class="sponsor-tile">WEST BUND ARTS</div>
+    <div class="sponsor-tile">NIGHTOWL CABS</div>
+    <div class="sponsor-tile">404 RECORDS</div>
+  </div>
+</section>
+
+<section class="final-cta" id="register">
+  <div class="scribble">↓ 一年只有一次 ↓</div>
+  <div class="huge">
+    <span class="stroke">SEE YOU</span><br/>
+    AT THE PULSE
+  </div>
+  <a href="mailto:hello@neonpulse.fest" class="cta">
+    锁定双日通票 <span class="arrow">→</span>
+  </a>
+</section>
+
+<footer>
+  <div>© 2026 NEON PULSE FESTIVAL · 上海西岸艺术中心</div>
+  <div class="links">
+    <a href="mailto:hello@neonpulse.fest">hello@neonpulse.fest</a>
+    <a href="#">微博</a>
+    <a href="#">小红书</a>
+    <a href="#">Instagram</a>
+  </div>
+</footer>
+
+<script>
+  const target = new Date('2026-07-18T18:00:00+08:00').getTime();
+  const pad = n => String(n).padStart(2, '0');
+  const els = {
+    d: document.getElementById('dd'),
+    h: document.getElementById('hh'),
+    m: document.getElementById('mm'),
+    s: document.getElementById('ss'),
+  };
+
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) {
+      els.d.textContent = '00';
+      els.h.textContent = '00';
+      els.m.textContent = '00';
+      els.s.textContent = '00';
+      document.querySelector('.countdown h2').textContent = '我们已经开场!';
+      return;
+    }
+    els.d.textContent = pad(Math.floor(diff / 86400000));
+    els.h.textContent = pad(Math.floor(diff % 86400000 / 3600000));
+    els.m.textContent = pad(Math.floor(diff % 3600000 / 60000));
+    els.s.textContent = pad(Math.floor(diff % 60000 / 1000));
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
